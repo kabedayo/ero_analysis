@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>エロスコア判定</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; background: #f9f9f9; }
+    textarea { width: 100%; height: 150px; font-size: 16px; padding: 10px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    .result { margin-top: 1em; font-size: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>エロスコア判定</h1>
+  <form id="eroForm">
+    <textarea name="text" placeholder="ここに文章を入力してください"></textarea><br>
+    <button type="submit">スコア判定</button>
+  </form>
+  <div class="result" id="result"></div>
+
+  <script>
+    const form = document.getElementById('eroForm');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = form.text.value;
+      const response = await fetch('/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      const data = await response.json();
+      resultDiv.innerText = `💋 エロスコア: ${data.score.toFixed(2)}`;
+    });
+  </script>
+</body>
+</html>
